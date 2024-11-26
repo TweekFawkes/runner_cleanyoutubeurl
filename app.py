@@ -12,12 +12,18 @@ from urllib.parse import urlparse, parse_qs
 # SOMETHING=value
 
 def extract_video_id(url):
+    # Add https:// prefix if not present
+    if not url.startswith(('http://', 'https://')):
+        url = 'https://' + url
+
     # Handle different YouTube URL formats
     parsed_url = urlparse(url)
     
+    # Handle youtu.be URLs
     if parsed_url.hostname in ('youtu.be', 'www.youtu.be'):
         return parsed_url.path[1:]
     
+    # Handle youtube.com URLs
     if parsed_url.hostname in ('youtube.com', 'www.youtube.com'):
         if 'v' in parse_qs(parsed_url.query):
             return parse_qs(parsed_url.query)['v'][0]
