@@ -25,6 +25,10 @@ def extract_video_id(url):
     
     # Handle youtube.com URLs
     if parsed_url.hostname in ('youtube.com', 'www.youtube.com'):
+        # Handle embed URLs
+        if parsed_url.path.startswith('/embed/'):
+            return parsed_url.path.split('/')[2]
+        # Handle regular URLs with v parameter
         if 'v' in parse_qs(parsed_url.query):
             return parse_qs(parsed_url.query)['v'][0]
     
